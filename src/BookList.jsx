@@ -1,29 +1,22 @@
-// BookList.js
 import { Link } from 'react-router-dom';
-// Импортируем компоненты Ant Design
-import { List, Button, Tag, Space } from 'antd';
-import { CheckOutlined, ReadOutlined } from '@ant-design/icons';
-import App from './App';
+import { List, Button, Tag } from 'antd';
+import { CheckOutlined, DeleteOutlined, ReadOutlined } from '@ant-design/icons';
 
-function BookList({ books, setBooks }) {
-  // Преобразуем наши книги в формат, подходящий для компонента List
+function BookList({ books, setBooks, deleteBook }) {
   const data = books.map(book => ({
     ...book,
-    // List будет использовать это свойство как ключ
     key: book.id,
   }));
 
   return (
     <div>
       <h2>Все книги</h2>
-      {/* Заменяем <ul> на компонент List из Ant Design */}
       <List
         itemLayout="horizontal"
         dataSource={data}
         renderItem={(book) => (
           <List.Item
             actions={[
-              // Кнопка теперь будет стилизованной
               <Button 
                 type={book.isRead ? "default" : "primary"} 
                 icon={book.isRead ? <ReadOutlined /> : <CheckOutlined />}
@@ -35,20 +28,26 @@ function BookList({ books, setBooks }) {
                 }}
               >
                 {book.isRead ? 'Не прочитана' : 'Прочитана'}
+              </Button>,
+              <Button
+                key="delete"
+                danger
+                icon={<DeleteOutlined/>}
+                onClick={() => deleteBook(book.id)}
+              >
+                Удалить
               </Button>
             ]}
           >
-            <List.Item.Meta
-              avatar={
-                // Используем Tag для отображения статуса
-                <Tag color={book.isRead ? 'green' : 'blue'}>
-                  {book.isRead ? '✅' : '📖'}
-                </Tag>
-              }
-              // Заголовок теперь является ссылкой на детальную страницу
-              title={<Link to={`/book/${book.id}`}>{book.title}</Link>}
-              description={`Автор: ${book.author}`}
-            />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+              <Tag color={book.isRead ? 'green' : 'blue'}>
+                {book.isRead ? '✅' : '📖'}
+              </Tag>
+              <Link to={`/book/${book.id}`} style={{ fontWeight: 'bold', fontSize: '16px' }}>
+                {book.title}
+              </Link>
+              <span style={{ color: '#666' }}>Автор: {book.author}</span>
+            </div>
           </List.Item>
         )}
       />

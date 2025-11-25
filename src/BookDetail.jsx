@@ -1,9 +1,8 @@
-// BookDetail.js
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Card, Spin, Alert, Tag } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-
+import './BookDetail.css';
 
 function BookDetail({ books }) {
   const { id } = useParams();
@@ -12,20 +11,15 @@ function BookDetail({ books }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Эффект для загрузки данных из API
   useEffect(() => {
-    // Если книга не найдена, не делаем запрос
     if (!book) return;
 
-    // Функция для выполнения запроса
     const fetchBookData = async () => {
       setLoading(true);
-      setError(null); // Сбрасываем ошибку перед новым запросом
+      setError(null);
       try {
-        // Формируем запрос к Google Books API
-        // Ищем по названию и автору для большей точности
         const response = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}&maxResults=1`
+          `https://www.googleapis.com/books/v1/volumes?q=intitle:${encodeURIComponent(book.title)}+inauthor:${encodeURIComponent(book.author)}`
         );
 
         if (!response.ok) {
@@ -34,9 +28,13 @@ function BookDetail({ books }) {
 
         const data = await response.json();
 
-        // Если API вернул результаты, берем первую найденную книгу
-        if (data.items && data.items.length > 0) { // ИСПРАВЛЕНО: lehgth -> length
-          setBookDetails(data.items[0]);
+        if (data.items && data.items.length > 0) {
+          const astEdition = data.items.find(item => 
+            item.volumeInfo.publisher && 
+            item.volumeInfo.publisher.toLowerCase().includes('аст')
+          ) || data.items[0];
+          
+          setBookDetails(astEdition);
         } else {
           throw new Error('Книга не найдена в базе данных');
         }
@@ -48,10 +46,10 @@ function BookDetail({ books }) {
     };
 
     fetchBookData();
-  }, [book]); // Эффект зависит от объекта book
+  }, [book]);
 
   if (!book) {
-    return <Alert message="Книга не найдена!" description="Попробуйте вернуться на главную странцую" type="error" showIcon></Alert>
+    return <Alert message="Книга не найдена!" description="Попробуйте вернуться на главную страницу" type="error" showIcon></Alert>
   }
 
   return (
@@ -59,8 +57,7 @@ function BookDetail({ books }) {
       <Link to="/">← Назад к списку</Link>
 
       <Card
-        title={book.title} // Заголовок карточки
-        // Верхний правый угол карточки: цветной тег со статусом
+        title={book.title}
         extra={<Tag color={book.isRead ? 'green' : 'blue'}>{book.isRead ? 'Прочитана' : 'К прочтению'}</Tag>}
         style={{ marginTop: 16 }}
       >
@@ -76,18 +73,23 @@ function BookDetail({ books }) {
         {error && <Alert message={error} type="warning" showIcon />}
 
         {bookDetails && !loading && (
-          <div>
+          <div className="book-detail-content">
             {bookDetails.volumeInfo.imageLinks?.thumbnail && (
-              <img
-                src={bookDetails.volumeInfo.imageLinks.thumbnail.replace('http:', 'https:')} // Меняем протокол на https
-                alt={`Обложка книги ${book.title}`}
-                style={{ float: 'left', marginRight: '16px', marginBottom: '16px', maxHeight: '200px' }}
-              />
+              <div className="book-cover-container">
+                <img
+                  src={bookDetails.volumeInfo.imageLinks.thumbnail.replace('http:', 'https:')}
+                  alt={`Обложка книги ${book.title}`}
+                  className="book-cover-image"
+                />
+                {bookDetails.volumeInfo.publisher && (
+                  <p><strong>Издательство:</strong> {bookDetails.volumeInfo.publisher}</p>
+                )}
+              </div>
             )}
             {bookDetails.volumeInfo.description && (
-              <div>
+              <div className="book-description">
                 <h3>Описание:</h3>
-                <p dangerouslySetInnerHTML={{ __html: bookDetails.volumeInfo.description }} />
+                <p>{bookDetails.volumeInfo.description}</p>
               </div>
             )}
           </div>

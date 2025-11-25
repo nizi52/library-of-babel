@@ -1,9 +1,9 @@
-//App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BookDetail from './BookDetail';
 import BookList from './BookList';
- 
+import AddBookForm from './AddBookForm';
+import 'antd/dist/reset.css';
 
 function App() {
   const [books, setBooks] = useState(() => {
@@ -49,9 +49,10 @@ function App() {
     setBooks(updatedBooks);
   };
 
-  return (
+return (
     <Router>
-      <div className="app">
+      <div className="grid-background"></div>
+      <div className="content">
         <nav>
           <Link to="/"><h1>Мой список книг</h1></Link>
           <Link to="/add">Добавить книгу</Link>
@@ -75,31 +76,5 @@ function App() {
   );
 }
 
-function AddBookForm({title, setTitle, author, setAuthor, addBook}) {
-  return (
-    <form onSubmit={addBook}>
-      <h2>Добавить новую книгу</h2>
-      <div>
-        <label htmlFor='title'>Название:</label>
-        <input
-        id='title'
-        type='text'
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
-        />
-      </div>
-      <div>
-        <label htmlFor='author'>Автор:</label>
-        <input
-        id='author'
-        type='text'
-        value={author}
-        onChange={(e) => setAuthor(e.target.value)}
-        />
-      </div>
-      <button type='submit'>Добавить в список</button>
-    </form>
-  );
-}
 
 export default App;
