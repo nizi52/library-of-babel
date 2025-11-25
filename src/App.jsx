@@ -1,20 +1,30 @@
+//App.jsx
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import BookDetail from './BookDetail';
+import BookList from './BookList';
+ 
 
 function App() {
-  const [books, setBooks] = useState([]);
+  const [books, setBooks] = useState(() => {
+    try {
+      const savedBooks = localStorage.getItem('my-reading-list');
+      return savedBooks ? JSON.parse(savedBooks) : [];
+    } catch (error) {
+      console.error('Ошибка загрузки из localStorage:', error);
+      return [];
+    }
+  });
+  
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');
 
   useEffect(() => {
-    const savedBooks = JSON.parse(localStorage.getItem('my-reading-list'));
-    if (savedBooks && Array.isArray(savedBooks)) {
-      setBooks(savedBooks);   
+    try {
+      localStorage.setItem('my-reading-list', JSON.stringify(books));
+    } catch (error) {
+      console.error('Ошибка сохранения в localStorage:', error);
     }
-  }, []);
-
-  useEffect (() => {
-    localStorage.setItem('my-reading-list', JSON.stringify(books));
   }, [books]);
 
   const addBook = (e) => {
@@ -34,44 +44,34 @@ function App() {
     setAuthor('');
   } 
 
+  const deleteBook = (bookId) => {
+    const updatedBooks = books.filter(book => book.id !== bookId);
+    setBooks(updatedBooks);
+  };
 
   return (
     <Router>
       <div className="app">
-        <h1>Мой список книг</h1>
-        <p>В вашей библиотеке: <strong>{books.length}</strong> книг(и)</p>
+        <nav>
+          <Link to="/"><h1>Мой список книг</h1></Link>
+          <Link to="/add">Добавить книгу</Link>
+        </nav>
 
-        <BookList books={books} setBooks={setBooks} />
-        <AddBookForm
-          title={title}
-          setTitle={setTitle}
-          author={author}
-          setAuthor={setAuthor}
-          addBook={addBook}
-        />
+        <Routes>
+          <Route path="/" element={<BookList books={books} setBooks={setBooks} deleteBook={deleteBook} />} />
+          <Route path="/add" element={  
+            <AddBookForm
+              title={title}
+              setTitle={setTitle}
+              author={author}
+              setAuthor={setAuthor}
+              addBook={addBook}
+            />
+          } />
+          <Route path="/book/:id" element={<BookDetail books={books} />} />
+        </Routes>
       </div>
     </Router>
-  );
-}
-
-function BookList({ books, setBooks }) {
-  return (
-    <ul>
-      {books.map(book => (
-        <li key={book.id}>
-          <span>{book.isRead ? '✅ ' : '📖 '}</span>
-          <strong>{book.title}</strong> - {book.author}
-          <button onClick={() => {
-            const updatedBooks = books.map(b =>
-              b.id === book.id ? { ...b, isRead: !b.isRead } : b
-            );
-            setBooks(updatedBooks);
-          }}>
-            {book.isRead ? 'Не прочитана' : 'Прочитана'}
-          </button>
-        </li>
-      ))}
-    </ul>
   );
 }
 
