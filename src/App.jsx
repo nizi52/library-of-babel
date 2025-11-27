@@ -1,3 +1,5 @@
+// починить ссылку 
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import BookDetail from './BookDetail';
@@ -54,12 +56,12 @@ return (
       <div className="grid-background"></div>
       <div className="content">
         <nav>
-          <Link to="/"><h1>Мой список книг</h1></Link>
+          <Link to="/main"><h1>Мой список книг</h1></Link>
           <Link to="/add">Добавить книгу</Link>
         </nav>
 
         <Routes>
-          <Route path="/" element={<BookList books={books} setBooks={setBooks} deleteBook={deleteBook} />} />
+          <Route path="/main" element={<BookList books={books} setBooks={setBooks} deleteBook={deleteBook} />} />
           <Route path="/add" element={  
             <AddBookForm
               title={title}
