@@ -19,7 +19,6 @@ function AddBookForm({ onAddBook, loading }) {
       background: 'linear-gradient(135deg, #417049 0%, #178744 100%)',
       padding: '20px', 
       borderRadius: '8px',
-      marginBottom: '30px'
     }}>
       <h2 style={{ marginTop: 0 }}>➕ Добавить книгу</h2>
       
@@ -133,19 +132,18 @@ function BookItem({ book, onToggleRead, onDelete, onShowDetails }) {
         <div style={{ flex: 1 }}>
           <h3 style={{ 
             margin: '0 0 5px 0',
-            color: book.isRead ? '#6c757d' : '#2c3e50',
-            textDecoration: book.isRead ? 'line-through' : 'none'
+            color: 'black',
           }}>
             {book.isRead ? '✅ ' : '📖 '}
             {book.title}
           </h3>
-          <p style={{ margin: 0, color: '#6c757d' }}>
+          <p style={{ margin: 0, color: '#616161' }}>
             Автор: {book.author}
           </p>
           {book.description && (
             <p style={{ 
               margin: '5px 0 0 0', 
-              color: '#868e96',
+              color: '#3b3b3b',
               fontSize: '14px',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
@@ -329,7 +327,6 @@ function Statistics({ books }) {
       color: 'white',
       padding: '20px',
       borderRadius: '8px',
-      marginBottom: '30px'
     }}>
       <h2 style={{ marginTop: 0 }}>📊 Статистика</h2>
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
@@ -361,25 +358,40 @@ function Media() {
       color: 'white',
       padding: '20px',
       borderRadius: '8px',
-      marginBottom: '30px'
+
     }}>
       <h2 style={{ marginTop: 0 }}>💻 Другие мои работы</h2>
       <div style={{ fontSize: '18px' }}>
         <a
-          href='https://github.com/nizi52'
+          href='https://nizi52.github.io/'
           target='_blank'
           rel='noopener noreferrer'
           style={{
             color: 'white',
             textDecoration: 'none',
             fontWeight: 'bold',
-            opacity: 0.9,
-            transition: 'opacity 0.2s'
+            transition: 'opacity 0.1s',
           }}
-          onMouseEnter={(e) => e.target.style.opacity = '1'}
-          onMouseLeave={(e) => e.target.style.opacity = '0.9'}
+          onMouseEnter={(e) => e.target.style.color = '#8fff6a'}
+          onMouseLeave={(e) => e.target.style.color = '#ffffff'}
         >
-          🔗 GitHub профиль
+          🔗 Личный сайт
+        </a>
+        <p></p> 
+        <a
+          href='https://github.com/nizi52'
+          target='_blank'
+          rel='noopener noreferrer'
+          style={{
+            color: '#ffffff',
+            textDecoration: 'none',
+            fontWeight: 'bold',
+            transition: 'opacity 0.1s',
+          }}
+          onMouseEnter={(e) => e.target.style.color = '#8fff6a'}
+          onMouseLeave={(e) => e.target.style.color = '#ffffff'}        
+        >
+          🔗 Github профиль         
         </a>
       </div>
     </div>    
@@ -388,7 +400,7 @@ function Media() {
 
 function SearchBar({ searchQuery, onSearchChange }) {
   return (
-    <div style={{ marginBottom: '20px' }}>
+    <div style={{}}>
       <input
         type="text"
         value={searchQuery}
@@ -415,7 +427,7 @@ async function fetchBookFromGoogle(title, author) {
     const response = await fetch(url);
     const data = await response.json();
     
-    console.log('Google Books API response:', data); // Для отладки
+    console.log('Google Books API response:', data);
 
     if (!data.items || data.items.length === 0) {
       return null;
@@ -451,7 +463,7 @@ export default function App() {
 
     const googleData = await fetchBookFromGoogle(title, author);
     
-    console.log('Fetched data:', googleData); // Для отладки
+    console.log('Fetched data:', googleData);
 
     const newBook = {
       id: Date.now(),
@@ -547,7 +559,7 @@ export default function App() {
       </div>
 
       <div>
-        <h2 style={{ color: '#ffffff', marginBottom: '20px' }}>
+        <h2 style={{ color: '#ffffff'}}>
           Книги ({filteredBooks.length})
           {searchQuery && ` - результаты поиска`}
         </h2>
