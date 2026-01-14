@@ -327,6 +327,7 @@ function Statistics({ books }) {
       color: 'white',
       padding: '20px',
       borderRadius: '8px',
+      height: '130px'
     }}>
       <h2 style={{ marginTop: 0 }}>📊 Статистика</h2>
       <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
@@ -358,10 +359,11 @@ function Media() {
       color: 'white',
       padding: '20px',
       borderRadius: '8px',
+      height: '130px'      
 
     }}>
       <h2 style={{ marginTop: 0 }}>💻 Другие мои работы</h2>
-      <div style={{ fontSize: '18px' }}>
+      <div style={{ fontSize: '18px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
         <a
           href='https://nizi52.github.io/'
           target='_blank'
@@ -370,14 +372,13 @@ function Media() {
             color: 'white',
             textDecoration: 'none',
             fontWeight: 'bold',
-            transition: 'opacity 0.1s',
+            transition: 'opacity 0.1s'
           }}
           onMouseEnter={(e) => e.target.style.color = '#8fff6a'}
           onMouseLeave={(e) => e.target.style.color = '#ffffff'}
         >
           🔗 Личный сайт
         </a>
-        <p></p> 
         <a
           href='https://github.com/nizi52'
           target='_blank'
