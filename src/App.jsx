@@ -78,7 +78,7 @@ export default function App() {
         justifyContent: 'center',
         gap: '16px',
       }}>
-        <img src='/icons/babel.png' alt='Babel'style={{height: '45px', width: '45px', objectFit: 'cover', borderRadius: '8px'}}/>
+        <img src='icons/babel.png' alt='Babel'style={{height: '45px', width: '45px', objectFit: 'cover', borderRadius: '8px'}}/>
         Вавилонская библиотека
       </h1>
 
