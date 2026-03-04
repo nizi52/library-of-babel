@@ -522,7 +522,7 @@ export default function App() {
         marginBottom: '40px',
         textShadow: '2px 2px 4px rgba(0,0,0,0.1)'
       }}>
-        📚 Моя библиотека
+        📚 Вавилонская библиотека
       </h1>
 
       <div style={{
