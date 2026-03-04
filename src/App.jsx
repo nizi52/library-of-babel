@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import babelImg from './icons/babel.png';
 
 import AddBookForm      from './components/AddBookForm';
 import BookItem         from './components/BookItem';
@@ -78,7 +79,7 @@ export default function App() {
         justifyContent: 'center',
         gap: '16px',
       }}>
-        <img src="/src/icons/babel.png" alt='Babel' style={{height: '45px', width: '45px', objectFit: 'cover', borderRadius: '8px'}}/>
+        <img src={babelImg} alt='Babel' style={{ height: '45px', width: '45px', objectFit: 'cover', borderRadius: '8px' }} />
         Вавилонская библиотека
       </h1>
 
