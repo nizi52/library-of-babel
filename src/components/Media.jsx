@@ -7,7 +7,7 @@ export default function Media() {
       color: 'white',
       padding: '20px',
       borderRadius: '8px',
-      minHeight: '130px',
+      minHeight: '100%',
     }}>
       <h2 style={{ marginTop: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
         <IconMonitor size={22} color="white" /> Другие мои работы

@@ -124,7 +124,11 @@ export default function App() {
             По запросу «{searchQuery}» ничего не найдено
           </p>
         ) : (
-          <ul style={{ listStyle: 'none', padding: 0 }}>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0,
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+            gap: '20px',
+          }}>
             {filteredBooks.map((book) => (
               <BookItem
                 key={book.id}

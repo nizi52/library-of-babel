@@ -1,24 +1,24 @@
 export async function fetchBookFromGoogle(title, author) {
   const query = encodeURIComponent(`${title} ${author}`);
-  const url = `https://www.googleapis.com/books/v1/volumes?q=${query}&maxResults=1`;
+  const url = `https://openlibrary.org/search.json?q=${query}&limit=1`;
 
   try {
     const response = await fetch(url);
     const data = await response.json();
 
-    console.log('Google Books API response:', data);
+    if (!data.docs || data.docs.length === 0) return null;
 
-    if (!data.items || data.items.length === 0) {
-      return null;
-    }
+    const book = data.docs[0];
+    const coverId = book.cover_i;
 
-    const info = data.items[0].volumeInfo;
     return {
-      description: info.description || 'Описание отсутствует',
-      cover: info.imageLinks?.thumbnail?.replace('http://', 'https://') || null,
+      description: book.first_sentence?.[0] || book.subject?.slice(0, 3).join(', ') || '',
+      cover: coverId
+        ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`
+        : null,
     };
   } catch (error) {
-    console.error('Google Books error:', error);
+    console.error('Open Library error:', error);
     return null;
   }
 }
